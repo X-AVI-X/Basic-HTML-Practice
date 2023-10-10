@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Information</title>
+</head>
+<body>
+
+<div style="overflow-x: auto;">
+    <table role="table" aria-label="Country Information">
+        <thead>
+        <tr>
+            <th scope="col" data-column="name">Country Name</th>
+            <th scope="col" data-column="population">Population</th>
+            <th scope="col" data-column="languages">Languages Spoken</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Data rows will be populated dynamically using JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const countries = [
+        { name: "United States", population: 331002651, languages: "English" },
+        { name: "China", population: 1439323776, languages: "Chinese" },
+        { name: "India", population: 1380004385, languages: "Hindi, English" },
+        // Add more countries here
+    ];
+
+    const tableBody = document.querySelector("tbody");
+    const tableHeader = document.querySelector("thead");
+
+    function renderTable() {
+        tableBody.innerHTML = "";
+        countries.forEach((country) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${country.name}</td>
+        <td>${country.population.toLocaleString()}</td>
+        <td>${country.languages}</td>
+      `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function sortTable(column) {
+        countries.sort((a, b) => a[column] > b[column] ? 1 : -1);
+        renderTable();
+    }
+
+    function randomizePopulation() {
+        countries.forEach((country) => {
+            const randomChange = Math.floor(Math.random() * 1000000) - 500000;
+            country.population += randomChange;
+        });
+        renderTable();
+    }
+
+    tableHeader.addEventListener("click", (event) => {
+        if (event.target.dataset.column) {
+            sortTable(event.target.dataset.column);
+        }
+    });
+
+    renderTable();
+    setInterval(randomizePopulation, 3000); // Randomize population every 3 seconds
+</script>
+
+</body>
+</html>
